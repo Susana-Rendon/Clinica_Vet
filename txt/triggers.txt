@@ -1,0 +1,34 @@
+DELIMITER //
+CREATE TRIGGER AlertaVacunacion AFTER INSERT ON Vacunacion
+FOR EACH ROW
+BEGIN
+    DECLARE mensaje VARCHAR(255);
+    SET mensaje = CONCAT('Vacunación registrada para la mascota ID: ', NEW.id_mascota, ' con la vacuna: ', NEW.vacuna);
+    SELECT mensaje AS Alerta;
+END;
+//
+DELIMITER ;
+
+-- Trigger para registrar cambios en historial médico
+DELIMITER //
+CREATE TRIGGER RegistrarHistorial AFTER UPDATE ON HistorialMedico
+FOR EACH ROW
+BEGIN
+    INSERT INTO HistorialMedico(fecha, descripcion, id_mascota) 
+    VALUES (NOW(), 'Historial actualizado', NEW.id_mascota);
+END;
+//
+DELIMITER ;
+
+-- Trigger para controlar el stock de medicamentos
+DELIMITER //
+CREATE TRIGGER ControlStock AFTER UPDATE ON Medicamento
+FOR EACH ROW
+BEGIN
+    IF NEW.stock < 5 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'El stock del medicamento es bajo, por favor reponga.';
+    END IF;
+END;
+//
+DELIMITER ;

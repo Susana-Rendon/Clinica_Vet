@@ -1,0 +1,34 @@
+DELIMITER //
+CREATE PROCEDURE RegistrarMascota(IN nombre VARCHAR(100), IN especie VARCHAR(50), IN raza VARCHAR(50), IN edad INT, IN id_dueno INT)
+BEGIN
+    INSERT INTO Mascota(nombre, especie, raza, edad, id_dueno) VALUES (nombre, especie, raza, edad, id_dueno);
+END;
+//
+DELIMITER ;
+
+-- Programación de citas
+DELIMITER //
+CREATE PROCEDURE ProgramarCita(IN fecha DATETIME, IN motivo VARCHAR(255), IN id_mascota INT)
+BEGIN
+    INSERT INTO Cita(fecha, motivo, id_mascota) VALUES (fecha, motivo, id_mascota);
+END;
+//
+DELIMITER ;
+
+-- Registro de tratamientos
+DELIMITER //
+CREATE PROCEDURE RegistrarTratamiento(IN fecha DATE, IN descripcion TEXT, IN id_mascota INT)
+BEGIN
+    INSERT INTO HistorialMedico(fecha, descripcion, id_mascota) VALUES (fecha, descripcion, id_mascota);
+END;
+//
+DELIMITER ;
+
+-- Control de vacunaciones
+DELIMITER //
+CREATE PROCEDURE RegistrarVacunacion(IN fecha DATE, IN vacuna VARCHAR(100), IN id_mascota INT)
+BEGIN
+    INSERT INTO Vacunacion(fecha, vacuna, id_mascota) VALUES (fecha, vacuna, id_mascota);
+END;
+//
+DELIMITER ;

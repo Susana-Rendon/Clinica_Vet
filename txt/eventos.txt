@@ -1,0 +1,31 @@
+DELIMITER //
+CREATE EVENT RecordatorioCitas
+ON SCHEDULE EVERY 1 DAY
+DO
+BEGIN
+    SELECT * FROM Cita WHERE fecha > NOW() AND fecha < DATE_ADD(NOW(), INTERVAL 1 DAY);
+END;
+//
+DELIMITER ;
+
+-- Actualización de calendarios de vacunación
+DELIMITER //
+CREATE EVENT ActualizarCalendarioVacunas
+ON SCHEDULE EVERY 1 MONTH
+DO
+BEGIN
+    SELECT id_mascota, vacuna, MAX(fecha) AS ultima_vacunacion FROM Vacunacion GROUP BY id_mascota, vacuna;
+END;
+//
+DELIMITER ;
+
+-- Reporte mensual de tratamientos realizados
+DELIMITER //
+CREATE EVENT ReporteMensualTratamientos
+ON SCHEDULE EVERY 1 MONTH
+DO
+BEGIN
+    SELECT * FROM HistorialMedico WHERE fecha > DATE_SUB(NOW(), INTERVAL 1 MONTH);
+END;
+//
+DELIMITER ;
